@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Your Tasks ({{ user.username }})</h1>
+
+{% if messages %}
+    {% for message in messages %}
+        <p style="color: green;">{{ message }}</p>
+    {% endfor %}
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="title" placeholder="Add new task..." required style="width:300px;">
+    <button type="submit">Add Task</button>
+</form>
+
+<ul>
+    {% for task in tasks %}
+        <li class="{% if task.completed %}completed{% endif %}">
+            {{ task.title }} 
+            <small>({{ task.created|date:"M d, Y" }})</small>
+            {% if task.completed %}
+                <a href="{% url 'toggle_task' task.id %}">[○ Undo]</a>
+            {% else %}
+                <a href="{% url 'toggle_task' task.id %}">[✓ Complete]</a>
+            {% endif %}
+            <a href="{% url 'delete_task' task.id %}">[Delete]</a>
+        </li>
+    {% empty %}
+        <li>No tasks yet! Add one above.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

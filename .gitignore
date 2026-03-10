@@ -11,3 +11,4 @@ mediafiles
 *.png
 *.gif
 *.svg
+migrations/

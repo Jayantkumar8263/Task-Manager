@@ -38,7 +38,7 @@ def delete_task(request, task_id):
     messages.success(request, "Task Deleted")
     return redirect('dashboard')
 
-# Register
+# Register here
 def register(request):
     if request.method == 'POST':
         form = UserCreationform(request.POST)
@@ -48,4 +48,4 @@ def register(request):
             return redirect('dashboard')
     else:
         form = UserCreationform()
-    return render(request, 'registration/register.html', {'form': form})
+    return render(request, 'register.html', {'form': form})

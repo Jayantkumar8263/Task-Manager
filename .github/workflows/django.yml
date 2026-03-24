@@ -1,6 +1,7 @@
 name: First_Django_CI
 
-on:
+# this is your trigger or event that will start the workflow.
+on :
   push:
     branches: [ main ]
   

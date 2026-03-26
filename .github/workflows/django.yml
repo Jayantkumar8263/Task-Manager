@@ -3,11 +3,23 @@ name : my_first_django_app
 # this is your trigger or event that will start the workflow.
 on :
   push:
-    branches: [ main ]
+    branches: [ development ]
   
 jobs :
   build :
     runs-on : ubuntu-latest
     steps :
-      - name : say hello
-        run : echo "Hello, World!"
+      - name : install Python
+        uses : actions/setup-python@v3
+        with :
+          python-version : '3.x'
+      - name : create virtual environment
+        run : python -m venv venv
+      - name : activate virtual environment
+        run : source venv/bin/activate
+      - name : clone repository
+        uses : actions/checkout@v3
+      - name : install dependencies
+        run : pip install -r requirements.txt
+      - name : run tests
+        run : python manage.py test

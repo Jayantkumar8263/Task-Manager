@@ -1,13 +1,25 @@
-name: First_Django_CI
+name : my_first_django_app
 
 # this is your trigger or event that will start the workflow.
 on :
   push:
-    branches: [ main ]
+    branches: [ development ]
   
-jobs : 
-  build : 
+jobs :
+  build :
     runs-on : ubuntu-latest
-    steps : 
-      - name : say hello
-        run : echo "hello world!"
+    steps :
+      - name : install Python
+        uses : actions/setup-python@v3
+        with :
+          python-version : '3.x'
+      - name : create virtual environment
+        run : python -m venv venv
+      - name : activate virtual environment
+        run : source venv/bin/activate
+      - name : clone repository
+        uses : actions/checkout@v3 # this will clone your repository to the runner, checkout@v3 is the latest version of the checkout action.
+      - name : install dependencies
+        run : pip install -r requirements.txt
+      - name : run tests
+        run : python manage.py test

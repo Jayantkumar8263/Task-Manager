@@ -3,7 +3,7 @@ name : my_first_django_app
 # this is your trigger or event that will start the workflow.
 on :
   push:
-    branches: [ main ]
+    branches: [ development ]
   
 jobs :
   deploy :

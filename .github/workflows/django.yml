@@ -25,7 +25,7 @@ jobs :
       - name: deploy on EC2
 
         run : |
-          ssh -o SecretHostKeyChecking=no ${{ secrets.AWS_EC2_IP }}@${{ secrets.AWS_EC2_USER }} 'EOF'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_EC2_IP }}@${{ secrets.AWS_EC2_USER }} 'EOF'
 
           cd /home/ubuntu/
 

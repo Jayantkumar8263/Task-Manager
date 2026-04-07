@@ -3,23 +3,46 @@ name : my_first_django_app
 # this is your trigger or event that will start the workflow.
 on :
   push:
-    branches: [ development ]
+    branches: [ main ]
   
 jobs :
-  build :
+  deploy :
+
     runs-on : ubuntu-latest
-    steps :
-      - name : install Python
-        uses : actions/setup-python@v3
-        with :
-          python-version : '3.x'
-      - name : create virtual environment
-        run : python -m venv venv
-      - name : activate virtual environment
-        run : source venv/bin/activate
-      - name : clone repository
-        uses : actions/checkout@v3
-      - name : install dependencies
-        run : pip install -r requirements.txt
-      - name : run tests
-        run : python manage.py test
+
+    steps:
+      - uses : actions/checkout@v4
+
+      - name : vm done 
+        run : echo "we have created the github VM"
+
+      - name : SSH Key 
+        run : |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.AWS_EC2_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa 
+      
+      - name: deploy on EC2
+
+        run : |
+          ssh -o SecretHostKeyChecking=no ${{ secrets.AWS_EC2_IP }}@${{ secrets.AWS_EC2_USER }} 'EOF'
+
+          cd /home/ubuntu/
+
+          source env/bin/activate
+          
+          git pull origin main
+
+          cd Task-Manager
+
+          pip install -r requirement.txt
+
+          cd TaskManager_Outer 
+
+          python manage.py makemigrations
+          python manage.py migrate 
+
+          sudo supervisorctl restart all
+          sudo systemctl restart nginx
+
+          EOF

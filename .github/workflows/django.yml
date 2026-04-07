@@ -1,13 +1,13 @@
 name : my_first_django_app
 
 # this is your trigger or event that will start the workflow.
-on :
-  push:
-    branches: [ development ]
+on : # event that will trigger the workflow, on is an event 
+  push: # it is a trigger point for our worker, it is a trigger 
+    branches: [ main ] # this means that the workflow will run every time you push to the main branch, kaha push ho raha hai.
   
 jobs :
   build :
-    runs-on : ubuntu-latest
+    runs-on : ubuntu-latest # it will create a virtual machine on the latest version of ubuntu, it will run on the latest version of ubuntu.
     steps :
       - name : install Python
         uses : actions/setup-python@v3
@@ -23,3 +23,5 @@ jobs :
         run : pip install -r requirements.txt
       - name : run tests
         run : python manage.py test
+
+# what is ymal : ymal is used for configuration files, it is a human-readable data serialization format, it is used for configuration files and in applications where data is being stored or transmitted.

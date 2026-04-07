@@ -10,7 +10,7 @@ from django.contrib import messages
 def home(request): 
     return render(request, 'home.html')
 
-# Dashboard
+# Dashboard of the user
 @login_required
 def dashboard(request):
     if request.method == 'POST':  # ✅ FIXED: mothod → method
@@ -30,7 +30,7 @@ def toggle_task(request, task_id):
     task.save()
     return redirect('dashboard')
 
-# Delete task
+# Delete task 
 @login_required
 def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id, user=request.user)
@@ -38,7 +38,7 @@ def delete_task(request, task_id):
     messages.success(request, "Task Deleted")
     return redirect('dashboard')
 
-# Register
+# Register new user
 def register(request):
     if request.method == 'POST':
         form = UserCreationform(request.POST)

@@ -6,6 +6,7 @@ on : # event that will trigger the workflow, on is an event
     branches: [ main ] # this means that the workflow will run every time you push to the main branch, kaha push ho raha hai.
   
 jobs :
+<<<<<<< HEAD
   build :
     runs-on : ubuntu-latest # it will create a virtual machine on the latest version of ubuntu, it will run on the latest version of ubuntu.
     steps :
@@ -25,3 +26,45 @@ jobs :
         run : python manage.py test
 
 # what is ymal : ymal is used for configuration files, it is a human-readable data serialization format, it is used for configuration files and in applications where data is being stored or transmitted.
+=======
+  deploy :
+
+    runs-on : ubuntu-latest
+
+    steps:
+      - uses : actions/checkout@v4
+
+      - name : vm done 
+        run : echo "we have created the github VM"
+
+      - name : SSH Key 
+        run : |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.AWS_EC2_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa 
+      
+      - name: deploy on EC2
+
+        run : |
+          ssh -o SecretHostKeyChecking=no ${{ secrets.AWS_EC2_IP }}@${{ secrets.AWS_EC2_USER }} 'EOF'
+
+          cd /home/ubuntu/
+
+          source env/bin/activate
+          
+          git pull origin main
+
+          cd Task-Manager
+
+          pip install -r requirement.txt
+
+          cd TaskManager_Outer 
+
+          python manage.py makemigrations
+          python manage.py migrate 
+
+          sudo supervisorctl restart all
+          sudo systemctl restart nginx
+
+          EOF
+>>>>>>> a6cd08d28a0c037f89b5e204a8b039e8aeefd6c7

@@ -4,7 +4,7 @@ name : my_first_django_app
 on : # event that will trigger the workflow, on is an event 
   push: # it is a trigger point for our worker, it is a trigger 
     branches: [ main ] # this means that the workflow will run every time you push to the main branch, kaha push ho raha hai.
-  
+
 jobs :
   build :
     runs-on : ubuntu-latest # this is the environment where our workflow will run, it is a runner, it is a machine that will run our workflow.
@@ -14,10 +14,9 @@ jobs :
 
       - name : install python 
         run : sudo apt-get install python3.8 -y # this is a step that will install python on our runner, it is a step that will run in our workflow, it is a step that will run in our runner.
+  
   deploy :
-
     runs-on : ubuntu-latest
-
     steps:
       - uses : actions/checkout@v4
 
@@ -33,7 +32,7 @@ jobs :
       - name: deploy on EC2
 
         run : |
-          ssh -o SecretHostKeyChecking=no ${{ secrets.AWS_EC2_IP }}@${{ secrets.AWS_EC2_USER }} 'EOF'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_EC2_USER }}@${{ secrets.AWS_EC2_IP }} << 'EOF'
 
           cd /home/ubuntu/
 

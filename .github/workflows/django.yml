@@ -6,33 +6,33 @@ on : # event that will trigger the workflow, on is an event
     branches: [ main ] # this means that the workflow will run every time you push to the main branch, kaha push ho raha hai.
 
 jobs :
-  build :
-    runs-on : ubuntu-latest # this is the environment where our workflow will run, it is a runner, it is a machine that will run our workflow.
+    # build :
+    #   runs-on : ubuntu-latest # this is the environment where our workflow will run, it is a runner, it is a machine that will run our workflow.
 
-    steps:
-      - uses : actions/checkout@v4 # this is a step that will check out our code from the repository, it is a step that will run in our workflow, it is a step that will run in our runner.
+    #   steps:
+    #     - uses : actions/checkout@v4 # this is a step that will check out our code from the repository, it is a step that will run in our workflow, it is a step that will run in our runner.
 
-      - name : install python 
-        run : sudo apt-get install python3.8 -y # this is a step that will install python on our runner, it is a step that will run in our workflow, it is a step that will run in our runner.
+    #     - name : install python 
+    #       run : sudo apt-get install python3.8 -y # this is a step that will install python on our runner, it is a step that will run in our workflow, it is a step
   
   deploy :
     runs-on : ubuntu-latest
     steps:
-      - uses : actions/checkout@v4
+      - uses : actions/checkout@v4 # it will cline the code from the repository to the runner, it is a step that will run in our workflow, it is a step that will run in our runner.
 
       - name : vm done 
         run : echo "we have created the github VM"
 
       - name : SSH Key 
         run : |
-          mkdir -p ~/.ssh/
+          mkdir -p ~/.ssh/ # . ssh . is used for making a hidden folder.
           echo "${{ secrets.AWS_EC2_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa 
+          chmod 600 ~/.ssh/id_rsa # chmod is used for changing the permissions of the file, it is used to make the file readable and writable only by the owner., 6 means read and write, 0 means no permissions, ~ means the home directory of the user.
       
       - name: deploy on EC2
 
         run : |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_EC2_USER }}@${{ secrets.AWS_EC2_IP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_EC2_USER }}@${{ secrets.AWS_EC2_IP }} << 'EOF' # ssh is used foe remote login. StrictHostKeyChecking=no is used to disable the host key checking, it is used to avoid the prompt that asks you to confirm the authenticity of the host. EOF is used to indicate the end of the command that will be executed on the remote server.
 
           cd /home/ubuntu/
 

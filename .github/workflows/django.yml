@@ -25,8 +25,8 @@ jobs :
 
       - name : SSH Key 
         run : |
-          mkdir -p ~/.ssh/ # . ssh . is used for making a hidden folder.
-          echo "${{ secrets.AWS_EC2_KEY }}" > ~/.ssh/id_rsa
+          mkdir -p ~/.ssh/ # . ssh . is used for making a hidden folder,  we are creating a hidden folder.
+          echo "${{ secrets.AWS_EC2_KEY }}" > ~/.ssh/id_rsa # this is used to create a file called id_rsa in the .ssh folder, and we are writing the value of the secret AWS_EC2_KEY in that file, it is used to store the private key that we will use to connect to our EC2 instance.
           chmod 600 ~/.ssh/id_rsa # chmod is used for changing the permissions of the file, it is used to make the file readable and writable only by the owner., 6 means read and write, 0 means no permissions, ~ means the home directory of the user.
       
       - name: deploy on EC2
